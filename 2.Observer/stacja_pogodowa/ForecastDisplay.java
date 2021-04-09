@@ -1,21 +1,29 @@
 package stacja_pogodowa;
 
+import java.util.Observer;
+import java.util.Observable;
+
 public class ForecastDisplay implements Observer, DisplayElement {
+    Observable observable;
     private float currentPressure = 29.92f;
     private float lastPressure;
-    private WeatherData weatherData;
+    //private WeatherData weatherData;
 
-    public ForecastDisplay(WeatherData weatherData) {
-        this.weatherData = weatherData;
-        weatherData.registerObserver(this);
+    public ForecastDisplay(/*WeatherData weatherData*/ Observable observable) {
+//        this.weatherData = weatherData;
+//        weatherData.registerObserver(this);
+        BetterWeatherData weatherData = (BetterWeatherData) observable;
+        observable.addObserver(this);
     }
 
-    @Override
-    public void update(float temp, float humidity, float pressure) {
-        lastPressure = currentPressure;
-        currentPressure = pressure;
 
-        display();
+    public void update(/*float temp, float humidity, float pressure*/ Observable obs, Object arg) {
+        if(observable instanceof BetterWeatherData) {
+            BetterWeatherData weatherData = (BetterWeatherData) obs;
+            lastPressure = currentPressure;
+            currentPressure = weatherData.getPressure();
+            display();
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package headfirst.strategy;
+package kaczka;
 
 public class MallardDuck extends Duck {
  
